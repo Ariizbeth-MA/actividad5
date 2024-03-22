@@ -78,9 +78,13 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
-        color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal'))
+
+        # x en 26.8 y y en y+1 para que quede centrado
+        goto(x + 26.8, y + 1)
+        #Se cambia el color del cuadrado dependiendo del tile que se muestre
+        color(tiles[mark]*5, 255 - tiles[mark]*4, 255 - tiles[mark]*4)
+        write(tiles[mark],align = "center", font=('Arial', 30, 'normal'))
+
     goto (0,210) # Contador que se mostrara
     write (cont_taps, font =("Arial", 15))
     if cont_matches == 32:
@@ -88,6 +92,7 @@ def draw():
        goto(0,0)
        color('purple')
        write ("Ganaste", align = "center", font= ("Arial",15,"bold")) # Contador de parejas encontradas y mensaje de que el jugador ha ganado  
+
     update()
 
     ontimer(draw, 100)
@@ -95,6 +100,7 @@ def draw():
 
 shuffle(tiles)
 setup(420, 420, 370, 0)
+colormode(255) #Modificaciones en RGB
 addshape(car)
 hideturtle()
 tracer(False)
