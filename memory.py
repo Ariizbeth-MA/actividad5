@@ -18,7 +18,8 @@ car = path('car.gif')
 tiles = list(range(32)) * 2
 state = {'mark': None}
 hide = [True] * 64
-
+cont_taps= 0 # Se inicializa el contador de los taps en 0
+cont_matches = 0  # Se inicializa el contador de las parejas en 0
 
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
@@ -47,6 +48,8 @@ def tap(x, y):
     """Update mark and hidden tiles based on tap."""
     spot = index(x, y)
     mark = state['mark']
+    global cont_taps
+    cont_taps +=1 #Empieza a contar los taps
 
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
         state['mark'] = spot
@@ -54,6 +57,8 @@ def tap(x, y):
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
+        global cont_matches
+        cont_matches +=1 # Empiez a contar las parejas 
 
 
 def draw():
@@ -73,13 +78,23 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
+
         # x en 26.8 y y en y+1 para que quede centrado
         goto(x + 26.8, y + 1)
         #Se cambia el color del cuadrado dependiendo del tile que se muestre
         color(tiles[mark]*5, 255 - tiles[mark]*4, 255 - tiles[mark]*4)
         write(tiles[mark],align = "center", font=('Arial', 30, 'normal'))
 
+    goto (0,210) # Contador que se mostrara
+    write (cont_taps, font =("Arial", 15))
+    if cont_matches == 32:
+       up()
+       goto(0,0)
+       color('purple')
+       write ("Ganaste", align = "center", font= ("Arial",15,"bold")) # Contador de parejas encontradas y mensaje de que el jugador ha ganado  
+
     update()
+
     ontimer(draw, 100)
 
 
